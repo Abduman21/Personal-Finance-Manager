@@ -6,6 +6,18 @@ Built from scratch with a domain-driven architecture, security-first mindset, an
 
 ---
 
+## 📸 Application Preview
+
+### Dashboard
+
+![FinanceFlow Dashboard](Screenshot%202026-09-28%20164802.png)
+
+### Finance Management View
+
+![FinanceFlow Application](Screenshot%202026-09-28%20164812.png)
+
+---
+
 ## 🚀 Key Features
 
 ### 🔐 Security & Multi-Tenant Authorization
@@ -78,37 +90,39 @@ Built from scratch with a domain-driven architecture, security-first mindset, an
 
 ## 📁 Project Structure
 
-```
+```text
 personal-finance-manager/
 ├── docker-compose.yml
 ├── README.md
 ├── .gitignore
+├── Screenshot 2026-09-28 164802.png
+├── Screenshot 2026-09-28 164812.png
 │
 ├── backend/
 │   ├── src/
 │   │   ├── config/          # Environment & MongoDB connection
 │   │   ├── controllers/     # Controller handlers
 │   │   ├── middleware/      # Auth, Zod validation, rate limiter, error handling
-│   │   ├── models/          # Mongoose models (User, Transaction, Category, Budget, SavingsGoal, RecurringTransaction)
+│   │   ├── models/          # Mongoose models
 │   │   ├── routes/          # Express REST API routes
 │   │   ├── services/        # Core business logic & database queries
 │   │   ├── utils/           # JWT & CSV export utilities
 │   │   ├── validators/      # Zod validation schemas
 │   │   ├── app.ts           # Express app setup
 │   │   └── server.ts        # Server entrypoint
-│   ├── src/__tests__/       # Integration & unit test suites
+│   ├── src/__tests__/
 │   ├── Dockerfile
 │   └── package.json
 │
 └── frontend/
     ├── src/
-    │   ├── components/      # Common UI components (Button, Input, Card, Modal, Badge, Skeleton, EmptyState)
-    │   ├── context/         # AuthContext & ThemeContext
-    │   ├── features/        # Feature modals & charts
-    │   ├── pages/           # Dashboard, Transactions, Categories, Budgets, Savings, Recurring, Reports, Settings
-    │   ├── services/        # API service clients
-    │   ├── types/           # TypeScript interface definitions
-    │   ├── utils/           # Currency & date formatters
+    │   ├── components/
+    │   ├── context/
+    │   ├── features/
+    │   ├── pages/
+    │   ├── services/
+    │   ├── types/
+    │   ├── utils/
     │   ├── App.tsx
     │   └── main.tsx
     ├── Dockerfile
@@ -129,8 +143,14 @@ personal-finance-manager/
 cd backend
 npm install
 npm run build
-npm test           # Runs Jest test suites
-npm run dev        # Starts backend server on http://localhost:5000
+npm test
+npm run dev
+```
+
+Backend runs on:
+
+```text
+http://localhost:5000
 ```
 
 ### 2. Frontend Setup
@@ -139,20 +159,24 @@ npm run dev        # Starts backend server on http://localhost:5000
 cd frontend
 npm install
 npm run build
-npm run dev        # Starts Vite dev server on http://localhost:5173
+npm run dev
+```
+
+Frontend runs on:
+
+```text
+http://localhost:5173
 ```
 
 ---
 
 ## 🐳 Docker Deployment
 
-To run MongoDB, Backend, and Frontend containers simultaneously:
-
 ```bash
 docker-compose up --build
 ```
 
-Access the application at:
+Access:
 - **Frontend**: `http://localhost:5173`
 - **Backend API**: `http://localhost:5000`
 
@@ -160,10 +184,10 @@ Access the application at:
 
 ## 🔐 Security Protections Summary
 
-1. **HttpOnly Cookie Tokens**: Protects tokens from being accessed via client-side JavaScript (`document.cookie`), preventing XSS token theft.
-2. **Multi-Tenant Ownership Verification**: Every query enforces `{ _id: id, userId: req.user._id }`. Users cannot tamper with parameter IDs to access or modify foreign records.
-3. **NoSQL Injection Prevention**: Mongoose strict schemas and Zod parsing sanitize all input data.
-4. **Rate Limiting**: Auth routes limited to 15 attempts / 15 mins to prevent brute-force attacks.
+1. **HttpOnly Cookie Tokens** — protects authentication tokens from client-side JavaScript access.
+2. **Multi-Tenant Ownership Verification** — user-owned records are scoped to the authenticated user.
+3. **Request Validation** — Zod schemas validate incoming payloads.
+4. **Rate Limiting** — authentication routes are rate limited to reduce brute-force attempts.
 
 ---
 
@@ -175,7 +199,7 @@ Access the application at:
 | `POST` | `/api/auth/login` | Log in and receive HttpOnly cookie | No |
 | `POST` | `/api/auth/logout` | Clear authentication cookie | Yes |
 | `GET` | `/api/auth/me` | Fetch active user profile session | Yes |
-| `PATCH`| `/api/auth/profile` | Update profile preferences & currency | Yes |
+| `PATCH` | `/api/auth/profile` | Update profile preferences & currency | Yes |
 | `GET` | `/api/transactions` | Query & filter transactions | Yes |
 | `POST` | `/api/transactions` | Create new transaction record | Yes |
 | `GET` | `/api/transactions/export/csv` | Download CSV transaction report | Yes |
